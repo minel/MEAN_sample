@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="mittens">
   <head>
     <meta charset="utf-8">
     <title>Mittens</title>
@@ -8,11 +8,19 @@
     <script type="text/javascript" src="angular.min.js">
     </script>
     <script type="text/javascript">
-      var myVar = 'hello';
-      console.log(myVar);
+      var app = angular.module('mittens', []);
+
+      app.controller('MittensCtrl', function($scope) {
+        $scope.meows = [
+          'Hello I flipped over a cup.',
+          'My owner just said hi to me. Yum.',
+          'I ran around the house today and made a mess.',
+          'Just climbing around.'
+        ];
+      });
     </script>
   </head>
-  <body>
+  <body ng-controller="MittensCtrl">
     <h1 class="page-title">Mittens</h1>
     <div class="row feed">
       <div class="col-md-4">
@@ -22,23 +30,10 @@
         <input type="password" name="name" size="30" placeholder="Password">
       </div>
       <div class="col-md-8">
-        <h3>
+        <h3 ng-repeat="meow in meows">
           <span class="glyphicon glyphicon-user" aria-hidden="true">
-          Hello I flipped over a cup.
+            {{ meow }}
         </h3>
-        <h3>
-          <span class="glyphicon glyphicon-user" aria-hidden="true">
-            My owner just said hi to me. Yum.
-          </h3>
-        <h3>
-          <span class="glyphicon glyphicon-user" aria-hidden="true">
-            I ran around the house today and made a mess.
-          </h3>
-        <h3>
-          <span class="glyphicon glyphicon-user" aria-hidden="true">
-            Just climbing around.
-          </h3>
-
       </div>
     </div>
   </body>
