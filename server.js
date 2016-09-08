@@ -9,7 +9,7 @@ app.get('/meows', function (req, res, next) {
     'My owner just said hi to me. Yum.',
     'I ran around the house today and made a mess.',
     'Just climbing around.',
-    'hello again'
+    'hello again there'
   ];
   return res.send(meows);
 });
