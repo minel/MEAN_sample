@@ -11,3 +11,8 @@
 .page-title{
   margin-left: 100px;
 }
+.new-meow{
+  border: 1px solid black;
+  padding: 20px;
+  width: 100%; 
+}
