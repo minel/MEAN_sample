@@ -10,14 +10,12 @@
     <script type="text/javascript">
       var app = angular.module('mittens', []);
 
-      app.controller('MittensCtrl', function($scope) {
-        $scope.meows = [
-          'Hello I flipped over a cup.',
-          'My owner just said hi to me. Yum.',
-          'I ran around the house today and made a mess.',
-          'Just climbing around.',
-          'hello again'
-        ];
+      app.controller('MittensCtrl', function($scope, $http) {
+
+        $http.get('/meows').then(function (response) {
+          $scope.meows = response.data;
+        });
+
       });
     </script>
   </head>
