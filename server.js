@@ -1,5 +1,6 @@
 var express = require('express'),
         mongoClient = require('mongodb').MongoClient,
+        ObjectId = require('mongodb').ObjectId,
         bodyParser = require('body-parser');
 var app = express();
 
@@ -37,7 +38,17 @@ app.post('/meows',function (req, res, next) {
     };
     meowsCollection.insert(newMeow, {w: 1}, function(err, meows){
       console.log("Record added as "+ meows);
-      res.send();
+      return res.send();
+    });
+  });
+});
+
+app.put('/meows/remove',function (req, res, next) {
+  db.collection('meows', function (err, meowsCollection) {
+    var meowId = req.body.meow._id;
+    meowsCollection.remove({_id: new ObjectId(meowId)}, {w: 1}, function(err){
+      console.log("Record deleted as "+ meowId);
+      return res.send();
     });
   });
 });
