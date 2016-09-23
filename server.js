@@ -53,6 +53,15 @@ app.put('/meows/remove',function (req, res, next) {
   });
 });
 
+app.post('/users',function (req, res, next) {
+  db.collection('users', function (err, usersCollection) {
+    usersCollection.insert(req.body, {w: 1}, function(err){
+      console.log("Record added as "+ req.body);
+      return res.send();
+    });
+  });
+});
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
