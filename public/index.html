@@ -5,13 +5,24 @@
     <title>Mittens</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
-    <script type="text/javascript" src="angular.min.js">
-    </script>
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="angular-route.min.js"></script>
     <script type="text/javascript">
-      var app = angular.module('mittens', []);
+      var app = angular.module('mittens', ['ngRoute']);
 
-      app.controller('MittensCtrl', function ($scope, $http) {
+      app.config(function ($routeProvider, $locationProvider) {
+        $routeProvider
+          .when('/', {
+            templateUrl: 'home.html',
+            controller: 'HomeController'
+          })
+          .when('/signup', {
+            templateUrl: 'signup.html',
+            controller: 'SignupController'
+          });
+      });
 
+      app.controller('HomeController', function ($scope, $http) {
 
         $scope.submitNewMeow = function () {
           $http.post('/meows', {newMeow: $scope.newMeow}).then(function () {
@@ -35,28 +46,28 @@
         getMeows();
 
       });
+
+      app.controller('SignupController', function ($scope, $http) {
+
+        $scope.submitSignup = function () {
+          var newUser = {
+            username: $scope.username,
+            password: $scope.password
+          };
+
+          $http.post('/users', newUser).then(function () {
+            alert('success');
+          });
+        }
+
+      });
+
     </script>
   </head>
-  <body ng-controller="MittensCtrl">
+  <body>
     <h1 class="page-title">Mittens</h1>
-    <div class="row feed">
-      <div class="col-md-4">
-        <h4>Login:</h4>
-        <input type="text" name="name" size="30" placeholder="Username">
-        <br><br>
-        <input type="password" name="name" size="30" placeholder="Password">
-      </div>
-      <div class="col-md-8">
-        <div class="new-meow">
-          <input class="form-control" ng-model="newMeow" type="text" name="name" placeholder="What do you have to meow today">
-          <button class="btn" type="button" ng-click="submitNewMeow()">Submit</button>
-        </div>
-        <h3 ng-repeat="meow in meows">
-          <span class="glyphicon glyphicon-user" aria-hidden="true">
-            {{ meow.text }}
-            <a href ng-click="removeMeow(meow)"><span class="glyphicon glyphicon-remove"></span></a>
-        </h3>
-      </div>
+    <div ng-view>
+
     </div>
   </body>
 </html>
