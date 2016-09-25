@@ -24,6 +24,15 @@
 
       app.controller('HomeController', function ($scope, $http) {
 
+        $scope.submitSignin = function () {
+          $http.put('/users/signin', {username: $scope.username, password: $scope.password})
+            .then(function () {
+              alert('Successfully signed in!');
+          }, function (err) {
+            alert("bad login credentials");
+          });
+        }
+
         $scope.submitNewMeow = function () {
           $http.post('/meows', {newMeow: $scope.newMeow}).then(function () {
             getMeows();
@@ -36,7 +45,7 @@
           $http.put('/meows/remove', {meow: meow}).then(function () {
             getMeows();
           });
-        }
+        };
 
         function getMeows() {
           $http.get('/meows').then(function (response) {
@@ -65,7 +74,7 @@
     </script>
   </head>
   <body>
-    <h1 class="page-title">Mittens</h1>
+    <h1 class="page-title"><a href="#/">Mittens</a></h1>
     <div ng-view>
 
     </div>
