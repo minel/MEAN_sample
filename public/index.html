@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
     <script type="text/javascript" src="angular.min.js"></script>
     <script type="text/javascript" src="angular-route.min.js"></script>
+    <script type="text/javascript" src="angular-cookies.min.js"></script>
     <script type="text/javascript">
-      var app = angular.module('mittens', ['ngRoute']);
+      var app = angular.module('mittens', ['ngRoute', 'ngCookies']);
 
       app.config(function ($routeProvider, $locationProvider) {
         $routeProvider
@@ -22,11 +23,12 @@
           });
       });
 
-      app.controller('HomeController', function ($scope, $http) {
+      app.controller('HomeController', function ($scope, $http, $cookies) {
 
         $scope.submitSignin = function () {
           $http.put('/users/signin', {username: $scope.username, password: $scope.password})
-            .then(function () {
+            .then(function (res) {
+              console.log(res.data.token);
               alert('Successfully signed in!');
           }, function (err) {
             alert("bad login credentials");
