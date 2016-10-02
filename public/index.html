@@ -44,7 +44,16 @@
           }, function (err) {
             alert("bad login credentials");
           });
-        }
+        };
+
+        $scope.logout = function () {
+          if ($cookies.get('token')) {
+            $cookies.remove('token');
+            $cookies.remove('currentUser');
+            $rootScope.token = null;
+            $rootScope.currentUser = null;
+          }
+        };
 
         $scope.submitNewMeow = function () {
           $http.post('/meows', {newMeow: $scope.newMeow}).then(function () {
