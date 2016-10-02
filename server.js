@@ -37,8 +37,13 @@ app.get('/meows', function (req, res, next) {
 //save a new Meow
 app.post('/meows',function (req, res, next) {
   db.collection('meows', function (err, meowsCollection) {
+    var token = req.headers.authorization;
+    var user = jwt.decode(token, JWT_SECRET);
+    console.log();
     var newMeow = {
-      text: req.body.newMeow
+      text: req.body.newMeow,
+      user: user._id,
+      username: user.username
     };
     meowsCollection.insert(newMeow, {w: 1}, function(err, meows){
       console.log("Record added as "+ newMeow);
@@ -50,10 +55,12 @@ app.post('/meows',function (req, res, next) {
 //remove a meow
 app.put('/meows/remove',function (req, res, next) {
   db.collection('meows', function (err, meowsCollection) {
+    var token = req.headers.authorization;
+    var user = jwt.decode(token, JWT_SECRET);
     var meowId = req.body.meow._id;
-    meowsCollection.remove({_id: new ObjectId(meowId)}, {w: 1}, function(err){
-      console.log("Record deleted as "+ meowId);
-      return res.send();
+    meowsCollection.remove({_id: new ObjectId(meowId), user: user._id}, {w: 1}, function(err, deleted){
+        console.log("Record deleted as "+ meowId);
+        return res.json(deleted.result.n);
     });
   });
 });

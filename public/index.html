@@ -31,6 +31,11 @@
       });
 
       app.controller('HomeController', function ($rootScope, $scope, $http, $cookies) {
+        var config = {
+          headers: {
+            'Authorization': $rootScope.token
+          }
+        };
 
         $scope.submitSignin = function () {
           $http.put('/users/signin', {username: $scope.username, password: $scope.password})
@@ -40,7 +45,6 @@
               $cookies.put('currentUser', $scope.username);
               $rootScope.token = res.data.token;
               $rootScope.currentUser = $scope.username;
-              alert('Successfully signed in!');
           }, function (err) {
             alert("bad login credentials");
           });
@@ -56,7 +60,7 @@
         };
 
         $scope.submitNewMeow = function () {
-          $http.post('/meows', {newMeow: $scope.newMeow}).then(function () {
+          $http.post('/meows', {newMeow: $scope.newMeow}, config).then(function () {
             getMeows();
             $scope.newMeow = '';
           });
@@ -64,8 +68,11 @@
         };
 
         $scope.removeMeow = function (meow) {
-          $http.put('/meows/remove', {meow: meow}).then(function () {
+          $http.put('/meows/remove', {meow: meow}, config).then(function (deleted) {
+            console.log(deleted.data + ' record(s) deleted');
             getMeows();
+          }, function (err) {
+            console.log('an error trying delete a record');
           });
         };
 

@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="col-md-8">
-    <div class="new-meow">
+    <div class="new-meow" ng-show="currentUser">
       <input class="form-control" ng-model="newMeow" type="text" name="name" placeholder="What do you have to meow today">
       <button class="btn" type="button" ng-click="submitNewMeow()">Submit</button>
     </div>
@@ -24,6 +24,8 @@
       <span class="glyphicon glyphicon-user" aria-hidden="true">
         {{ meow.text }}
         <a href ng-click="removeMeow(meow)"><span class="glyphicon glyphicon-remove"></span></a>
+        <br>
+        <small>{{meow.username}}</small>
     </h3>
   </div>
 </div>
