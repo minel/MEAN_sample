@@ -38,8 +38,8 @@ app.get('/meows', function (req, res, next) {
 app.post('/meows',function (req, res, next) {
   db.collection('meows', function (err, meowsCollection) {
     var token = req.headers.authorization;
+    console.log(token);
     var user = jwt.decode(token, JWT_SECRET);
-    console.log();
     var newMeow = {
       text: req.body.newMeow,
       user: user._id,
@@ -90,12 +90,8 @@ app.put('/users/signin',function (req, res, next) {
     usersCollection.findOne({username: req.body.username}, function (err, user) {
       if (user) {
         bcrypt.compare(req.body.password, user.password, function (err, result) {
-          if (result) {
-            var myToken = jwt.encode(user, JWT_SECRET);
-            return res.json({token: myToken});
-          } else {
-            return res.status(400).send();
-          }
+          var myToken = jwt.encode(user, JWT_SECRET);
+          return res.json({token: myToken});
         });
       }
       else {
